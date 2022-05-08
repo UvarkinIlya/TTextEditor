@@ -1,0 +1,13 @@
+Char 2
+{
+2.1. Polinom
+{
+1. Define
+2. Struct
+}
+2.2. Text
+{
+1. Define
+2. Struct
+}
+}
