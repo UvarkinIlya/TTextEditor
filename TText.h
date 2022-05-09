@@ -20,6 +20,8 @@ public:
     void goPrevLine();// переход к предыдущей позиции в тексте
     void writeToConsole();
 
+    bool isPCurrNull();
+
     //навигация
     void reset();
     bool isEnd();
@@ -28,6 +30,6 @@ public:
 private:
     TNode* readFileRec(std::ifstream& ifs);
 
-    void writeToConsoleRec(int level, TNode* node);
+    void writeToConsoleRec(int level, TNode* node, int& CurrLin);
 };
 

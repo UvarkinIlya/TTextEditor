@@ -1,4 +1,5 @@
 #include "TText.h"
+#include "Viewer.h"
 
 TText::TText(TNode *_pFirst) {
     if(_pFirst == nullptr){
@@ -20,12 +21,21 @@ void TText::readFile(const std::string& filename) {
 
 void TText::writeToConsole() {
     int level = 0;
-    writeToConsoleRec(level, pFirst);
+    int CurrLine = 0;
+    system("cls");
+    writeToConsoleRec(level, pFirst, CurrLine);
 }
 
-void TText::writeToConsoleRec(int level, TNode *node) {
+void TText::writeToConsoleRec(int level, TNode *node, int &CurrLine) {
     if(node == nullptr){
         return;
+    }
+
+    if(node == pCurr){
+        gotoxy(0, CurrLine);
+        color(10);
+    } else{
+        color(7);
     }
 
     for(int i = 0; i < level; i++){
@@ -33,8 +43,10 @@ void TText::writeToConsoleRec(int level, TNode *node) {
     }
 
     std::cout << node->text << std::endl;
-    writeToConsoleRec(level+1, node->pDown);
-    writeToConsoleRec(level, node->pNext);
+    CurrLine++;
+    writeToConsoleRec(level+1, node->pDown, CurrLine);
+    writeToConsoleRec(level, node->pNext, CurrLine);
+    color(7);
 }
 
 TNode *TText::readFileRec(std::ifstream &ifs) {
@@ -136,4 +148,8 @@ void TText::goNext() {
     } else{
         goPrevLine();
     }
+}
+
+bool TText::isPCurrNull() {
+    return pCurr == nullptr;
 }
