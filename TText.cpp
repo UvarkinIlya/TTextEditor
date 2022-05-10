@@ -75,10 +75,29 @@ TNode *TText::readFileRec(std::ifstream &ifs) {
 }
 
 void TText::writeFile(const std::string &filename) {
-    std::ifstream file (filename);
+    std::ofstream file (filename);
     if(!file.is_open()){
         throw_with_nested( std::runtime_error("Couldn't open file path:" + filename));
     }
+
+    writeFileRec(file, pFirst);
+    file.close();
+}
+
+void TText::writeFileRec(std::ofstream& file, TNode *node) {
+    if(node == nullptr){
+        return;
+    }
+
+    file << node->text << std::endl;
+    if(node->pDown != nullptr){
+        file << "{" << std::endl;
+    }
+    writeFileRec(file, node->pDown);
+    if(node->pDown != nullptr) {
+        file << "}" << std::endl;
+    }
+    writeFileRec(file, node->pNext);
 }
 
 std::string TText::getLine() {

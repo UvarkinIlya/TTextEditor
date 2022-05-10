@@ -11,6 +11,7 @@ public:
     explicit TText(TNode* _pFirst = nullptr);
     void readFile (const std::string& filename); //чтение текста из файла
     void writeFile (const std::string& filename); //запись в файл to-do дописать
+    void writeFileRec(std::ofstream& file, TNode *node);
     std::string getLine(); // чтение текущей строки
     void setLine (const std::string& str); // замена текущей строки
 

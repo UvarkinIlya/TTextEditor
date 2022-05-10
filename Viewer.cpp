@@ -12,6 +12,7 @@
 #define INS	82
 #define DEL	83
 #define ENTER 13
+#define SAVE 115
 
 void color(int color){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -52,6 +53,13 @@ void control(TText text){
                 break;
             case UP:
                 text.goPrevLine();
+                break;
+            case SAVE:
+                text.writeFile("../out.txt");
+                std::cout << "File save to ../out.txt" << std::endl;
+                std::cout << "press any key";
+                ch = getch();
+
                 break;
             case INS:
                 std::cout << "Direction 0 - Down, 1 - Next: ";
