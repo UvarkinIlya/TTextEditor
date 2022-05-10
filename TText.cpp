@@ -153,3 +153,133 @@ void TText::goNext() {
 bool TText::isPCurrNull() {
     return pCurr == nullptr;
 }
+
+void TText::insDownLine(const std::string& str) {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    auto *node = new TNode(str, pCurr->pDown, nullptr);
+    pCurr->pDown = node;
+
+    pCurr = pCurr->pDown;
+}
+
+void TText::insDownSection(const std::string& str) {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    auto *node = new TNode(str, nullptr, pCurr->pDown);
+    pCurr->pDown = node;
+
+    pCurr = pCurr->pDown;
+}
+
+void TText::insNextLine(const std::string& str) {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    auto *node = new TNode(str, pCurr->pDown, nullptr);
+
+    pCurr->pDown = nullptr;
+    pCurr->pNext = node;
+
+    pCurr = pCurr->pNext;
+}
+
+void TText::insNextSection (const std::string& str){
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    auto *node = new TNode(str, nullptr, pCurr->pDown);
+
+    pCurr->pDown = nullptr;
+    pCurr->pNext = node;
+
+    pCurr = pCurr->pNext;
+}
+
+void TText::delDownLine() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    if(pCurr->pDown == nullptr){
+        return;
+    }
+
+    TNode *delNode = pCurr->pDown;
+    if (delNode->pDown == nullptr){
+        pCurr->pDown = delNode->pNext;
+    }
+}
+
+void TText::delDownSection() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    if(pCurr->pDown == nullptr){
+        return;
+    }
+
+    TNode *delNode = pCurr->pDown;
+    pCurr->pDown = delNode->pNext;
+}
+
+void TText::delNextLine() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    if(pCurr->pNext == nullptr){
+        return;
+    }
+
+    TNode *delNode = pCurr->pNext;
+    if (delNode->pDown == nullptr){
+        pCurr->pNext = delNode->pNext;
+    }
+}
+
+void TText::delNextSection() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    if(pCurr->pNext == nullptr){
+        return;
+    }
+
+    TNode *delNode = pCurr->pNext;
+    pCurr->pNext = delNode->pNext;
+}
+
+void TText::delDown() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    pCurr->pDown = nullptr;
+}
+
+void TText::delPCurr() {
+    if(pCurr == nullptr){
+        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    }
+
+    if(pCurr == pFirst){
+        return;
+    }
+
+    TNode *delNode = pCurr;
+    goPrevLine();
+    if(pCurr->pNext == delNode){
+        pCurr->pNext = delNode->pNext;
+    } else if (pCurr->pDown == delNode){
+        pCurr->pDown = delNode->pNext;
+    }
+}
