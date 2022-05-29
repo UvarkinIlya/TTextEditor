@@ -1,3 +1,4 @@
+#pragma once
 #include "TNode.h"
 #include <iostream>
 #include <fstream>
@@ -7,13 +8,16 @@ class TText {
     TNode* pFirst;
     TNode* pCurr;
     std::stack<TNode*> Path; // стек траектории движения по тексту
+    std::stack<TNode*> stackIter; // стек для итератора
 public:
+    TNode* pCopy; //указатель на копию
     explicit TText(TNode* _pFirst = nullptr);
     void readFile (const std::string& filename); //чтение текста из файла
     void writeFile (const std::string& filename); //запись в файл to-do дописать
     void writeFileRec(std::ofstream& file, TNode *node);
     std::string getLine(); // чтение текущей строки
     void setLine (const std::string& str); // замена текущей строки
+    TText* getCopy();
 
     void goFirstLine();// переход к первой строке
     void goNextLine();// переход к следующей строке по Next
@@ -22,6 +26,7 @@ public:
     void writeToConsole();
 
     bool isPCurrNull();
+    TNode* getPCurr();
 
     //навигация
     void reset();

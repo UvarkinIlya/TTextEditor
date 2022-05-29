@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/79914/CLionProjects/TextEditor/TNode.h
+string
+-
+
+C:/Users/79914/CLionProjects/TextEditor/TText.cpp
+TText.h
+C:/Users/79914/CLionProjects/TextEditor/TText.h
+Viewer.h
+C:/Users/79914/CLionProjects/TextEditor/Viewer.h
+
+C:/Users/79914/CLionProjects/TextEditor/TText.h
+TNode.h
+C:/Users/79914/CLionProjects/TextEditor/TNode.h
+iostream
+-
+fstream
+-
+stack
+-
+
+C:/Users/79914/CLionProjects/TextEditor/Viewer.h
+

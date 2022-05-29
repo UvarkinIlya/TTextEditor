@@ -13,6 +13,9 @@
 #define DEL	83
 #define ENTER 13
 #define SAVE 115
+#define PRINT 112
+#define CLEAN 111
+#define COPY 99
 
 void color(int color){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -33,12 +36,12 @@ void control(TText text){
     char ch;
     do{
         std::string str;
-        ch = getch();
+        ch = _getch();
         switch (ch) {
             int direction, unit, target;
             case ENTER:
                 std::cout << "Enter text: ";
-                std::cin.ignore(256, '\n');
+                //std::cin.ignore(256, '\n');
                 std::getline(std::cin, str);
                 text.setLine(str);
                 break;
@@ -58,8 +61,29 @@ void control(TText text){
                 text.writeFile("../out.txt");
                 std::cout << "File save to ../out.txt" << std::endl;
                 std::cout << "press any key";
-                ch = getch();
+                ch = _getch();
 
+                break;
+            case PRINT:
+                std::cout << "Free Links: ";
+                TNode::printFreeLink();
+
+                std::cout << "press any key";
+                ch = _getch();
+                break;
+            case CLEAN:
+                std::cout << "Mem is clean";
+                TNode::memCleaner(text);
+
+                std::cout << "press any key";
+                ch = _getch();
+                break;
+            case COPY:
+                std::cout << "node copied ";
+                text.pCopy = text.getPCurr()->copy(text.getPCurr());
+
+                std::cout << "press any key";
+                ch = _getch();
                 break;
             case INS:
                 std::cout << "Direction 0 - Down, 1 - Next: ";

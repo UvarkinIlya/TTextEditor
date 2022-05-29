@@ -1,8 +1,12 @@
 Char 2
 {
-2.1. Polinom
+sijfis
+Hello
+{
+2.2. Text
 {
 1. Define
 2. Struct
+}
 }
 }

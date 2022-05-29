@@ -149,6 +149,7 @@ void TText::goPrevLine() {
 
 void TText::reset() {
     pCurr = pFirst;
+    stackIter.push(pCurr);
 }
 
 bool TText::isEnd() {
@@ -156,16 +157,19 @@ bool TText::isEnd() {
 }
 
 void TText::goNext() {
-    if(pCurr == nullptr){
-        throw_with_nested(std::runtime_error("pCurr is NULL"));
+    if(stackIter.empty()){
+        pCurr = nullptr;
+        return;
     }
 
+    pCurr = stackIter.top();
+    stackIter.pop();
+
+    if(pCurr->pNext != nullptr){
+        stackIter.push(pCurr->pNext);
+    }
     if(pCurr->pDown != nullptr){
-        goDownLine();
-    } else if(pCurr->pNext != nullptr){
-        goNextLine();
-    } else{
-        goPrevLine();
+        stackIter.push(pCurr->pDown);
     }
 }
 
@@ -189,7 +193,7 @@ void TText::insDownSection(const std::string& str) {
         throw_with_nested(std::runtime_error("pCurr is NULL"));
     }
 
-    auto *node = new TNode(str, nullptr, pCurr->pDown);
+    auto *node = new TNode(str, pCurr->pNext, nullptr);
     pCurr->pDown = node;
 
     pCurr = pCurr->pDown;
@@ -200,9 +204,9 @@ void TText::insNextLine(const std::string& str) {
         throw_with_nested(std::runtime_error("pCurr is NULL"));
     }
 
-    auto *node = new TNode(str, pCurr->pDown, nullptr);
+    auto *node = new TNode(str, nullptr, pCurr->pNext);
 
-    pCurr->pDown = nullptr;
+    //pCurr->pDown = nullptr;
     pCurr->pNext = node;
 
     pCurr = pCurr->pNext;
@@ -213,9 +217,9 @@ void TText::insNextSection (const std::string& str){
         throw_with_nested(std::runtime_error("pCurr is NULL"));
     }
 
-    auto *node = new TNode(str, nullptr, pCurr->pDown);
+    auto *node = new TNode(str, pCurr->pNext, nullptr);
 
-    pCurr->pDown = nullptr;
+    //pCurr->pDown = nullptr;
     pCurr->pNext = node;
 
     pCurr = pCurr->pNext;
@@ -234,6 +238,7 @@ void TText::delDownLine() {
     if (delNode->pDown == nullptr){
         pCurr->pDown = delNode->pNext;
     }
+    delete delNode;
 }
 
 void TText::delDownSection() {
@@ -247,6 +252,7 @@ void TText::delDownSection() {
 
     TNode *delNode = pCurr->pDown;
     pCurr->pDown = delNode->pNext;
+    delete delNode;
 }
 
 void TText::delNextLine() {
@@ -262,6 +268,7 @@ void TText::delNextLine() {
     if (delNode->pDown == nullptr){
         pCurr->pNext = delNode->pNext;
     }
+    delete delNode;
 }
 
 void TText::delNextSection() {
@@ -275,6 +282,7 @@ void TText::delNextSection() {
 
     TNode *delNode = pCurr->pNext;
     pCurr->pNext = delNode->pNext;
+    delete delNode;
 }
 
 void TText::delDown() {
@@ -301,4 +309,15 @@ void TText::delPCurr() {
     } else if (pCurr->pDown == delNode){
         pCurr->pDown = delNode->pNext;
     }
+}
+
+TNode *TText::getPCurr() {
+    return pCurr;
+}
+
+TText* TText::getCopy() {
+    auto node = pFirst->copy(pFirst);
+    auto text = new TText(node);
+
+    return text;
 }
